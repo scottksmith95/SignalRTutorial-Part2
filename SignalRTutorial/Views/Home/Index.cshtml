@@ -10,9 +10,12 @@
     <title>Index</title>
     <script src="~/Scripts/jquery-1.6.4.js"></script>
     <script src="~/Scripts/jquery.signalR-0.5.3.js"></script>
-    <script src="/SignalR/Hubs"></script>
+    <script src="/SignalR2/Hubs"></script>
 </head>
 <body>
+    <div style="float: right">
+        <ul id="connections"></ul>
+    </div>
     <div>
         <input id="newTagText" type="text" placeholder="Enter a new tag" />
         <input id="newTagSubmit" type="submit" value="Add new tag" />
@@ -22,7 +25,7 @@
 
     <script type="text/javascript">
         $(function () {
-            var tagHub = $.connection.tagHub;
+            var tagHub = $.connection.ourTagHub;
 
             tagHub.initTags = function (tags) {
                 $.each(tags, function (index, value) {
@@ -33,6 +36,18 @@
             tagHub.addTag = function (tag) {
                 $('#tags').append('<li>' + tag + '</li>');
             };
+
+            tagHub.joined = function (connectionId) {
+                $('#connections').append('<li>Connect: ' + connectionId + '</li>');
+            }
+
+            tagHub.rejoined = function (connectionId) {
+                $('#connections').append('<li>Reconnect: ' + connectionId + '</li>');
+            }
+
+            tagHub.leave = function (connectionId) {
+                $('#connections').append('<li>Disconnect: ' + connectionId + '</li>');
+            }
 
             $('#newTagSubmit').click(function () {
                 var tag = $('#newTagText').attr('value');

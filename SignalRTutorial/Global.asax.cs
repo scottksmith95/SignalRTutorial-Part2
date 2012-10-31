@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using SignalR;
 
 namespace SignalRTutorial
 {
@@ -14,6 +15,8 @@ namespace SignalRTutorial
     {
         protected void Application_Start()
         {
+            RouteTable.Routes.MapHubs("~/SignalR2");
+
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);

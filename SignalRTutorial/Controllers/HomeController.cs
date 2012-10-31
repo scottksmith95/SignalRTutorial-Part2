@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SignalR;
+using SignalRTutorial.Hubs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,5 +18,10 @@ namespace SignalRTutorial.Controllers
             return View();
         }
 
+        public void Notify()
+        {
+            var context = GlobalHost.ConnectionManager.GetHubContext<TagHub>();
+            context.Clients.addTag("notify called");
+        }
     }
 }

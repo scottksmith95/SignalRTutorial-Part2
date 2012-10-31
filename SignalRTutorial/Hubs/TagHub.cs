@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using SignalR.Hubs;
 
 namespace SignalRTutorial.Hubs
 {
-    public class TagHub : Hub
+    [HubName("ourTagHub")]
+    public class TagHub : Hub, IConnected, IDisconnect
     {
         static List<string> _tags = new List<string>();
 
@@ -27,6 +29,24 @@ namespace SignalRTutorial.Hubs
 
             //Call the addTag method on all connected clients
             Clients.addTag(tag);
+        }
+
+        public Task Connect()
+        {
+            //Call the joined method on all connected clients
+            return Clients.joined(Context.ConnectionId);
+        }
+
+        public Task Reconnect(IEnumerable<string> groups)
+        {
+            //Call the rejoined method on all connected clients
+            return Clients.rejoined(Context.ConnectionId);
+        }
+
+        public Task Disconnect()
+        {
+            //Call the leave method on all connected clients
+            return Clients.leave(Context.ConnectionId);
         }
     }
 }
